@@ -1,0 +1,41 @@
+services:
+  web:
+    image: magic-stream-web-dev:1.0.0
+    container_name: magic-stream-web-dev
+    build:
+      context: ./Client/magic-stream-client
+      dockerfile: Dockerfile.dev
+    develop:
+      watch:
+        - path: ./Client/magic-stream-client/package.json
+          action: rebuild
+        - path: ./Client/magic-stream-client/package-lock.json
+          action: rebuild
+        - path: ./Client/magic-stream-client
+          target: /app
+          action: sync
+
+    depends_on:
+      - api
+    ports:
+      - "5173:5173"
+    environment:
+      - API_URL=http://${API_HOST_IP}:8080
+
+  api:
+    image: magic-stream-api-dev:1.0.1
+    container_name: magic-stream-api-dev
+    build:
+      context: ./Server/MagicStreamServer
+      dockerfile: Dockerfile.dev
+    develop:
+      watch:
+        - path: ./Server/MagicStreamServer/main.go
+          action: rebuild
+        - path: ./Server/MagicStreamServer/go.mod
+          action: rebuild
+        - path: ./Server/MagicStreamServer/go.sum
+          action: rebuild
+        - path: ./Server/MagicStreamServer
+          target: /app
+          action: sync

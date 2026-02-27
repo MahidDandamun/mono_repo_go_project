@@ -1,9 +1,9 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import axiosClient from '../../api/axiosConfig'
 import Movies from '../movies/Movies';
 import Spinner from '../spinner/Spinner';
 
-const Home =({updateMovieReview}) => {
+const Home = ({ updateMovieReview }) => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState();
@@ -12,17 +12,17 @@ const Home =({updateMovieReview}) => {
         const fetchMovies = async () => {
             setLoading(true);
             setMessage("");
-            try{
+            try {
                 const response = await axiosClient.get('/movies');
                 setMovies(response.data);
-                if (response.data.length === 0){
+                if (response.data.length === 0) {
                     setMessage('There are currently no movies available')
                 }
 
-            }catch(error){
+            } catch (error) {
                 console.error('Error fetching movies:', error)
                 setMessage("Error fetching movies")
-            }finally{
+            } finally {
                 setLoading(false)
             }
         }
@@ -31,10 +31,11 @@ const Home =({updateMovieReview}) => {
 
     return (
         <>
+            <h1>I loved her</h1>
             {loading ? (
-                <Spinner/>
-            ):  (
-                <Movies movies ={movies} updateMovieReview={updateMovieReview} message ={message}/>
+                <Spinner />
+            ) : (
+                <Movies movies={movies} updateMovieReview={updateMovieReview} message={message} />
             )}
         </>
 
