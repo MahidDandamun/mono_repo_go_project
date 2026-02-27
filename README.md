@@ -1,0 +1,1 @@
+# mono_repo_go_project
